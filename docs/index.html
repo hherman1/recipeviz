@@ -81,6 +81,11 @@
       margin-bottom: 0;
     }
 
+    .panel-actions {
+      display: flex;
+      gap: 0.4rem;
+    }
+
     button {
       padding: 0.4rem 0.7rem;
       border: 1px solid #0d7d30;
@@ -106,6 +111,16 @@
       border-color: #aab5ac;
       background: #c5cdc7;
       cursor: not-allowed;
+    }
+
+    .share-button {
+      min-width: 5rem;
+      background: #fff;
+      color: #0d7d30;
+    }
+
+    .share-button:hover:not(:disabled) {
+      background: #edf8f0;
     }
 
     .header-actions {
@@ -473,7 +488,10 @@ bake 350* 30-40 minutes FOLD</textarea>
     <section>
       <div class="panel-header">
         <div class="panel-title">SVG</div>
-        <button id="download" type="button" disabled>Download SVG</button>
+        <div class="panel-actions">
+          <button class="share-button" id="share" type="button" aria-live="polite" disabled>Share</button>
+          <button id="download" type="button" disabled>Download SVG</button>
+        </div>
       </div>
       <div class="result" aria-live="polite">
         <div id="status">Loading renderer…</div>
@@ -533,11 +551,13 @@ bake 350* 30-40 minutes FOLD</textarea>
     const error = document.querySelector("#error");
     const output = document.querySelector("#output");
     const download = document.querySelector("#download");
+    const share = document.querySelector("#share");
     const help = document.querySelector("#help");
     const helpOpen = document.querySelector("#help-open");
     const helpClose = document.querySelector("#help-close");
     let currentImageURL = "";
     let shareRevision = 0;
+    let shareFeedbackTimer;
 
     helpOpen.addEventListener("click", () => help.showModal());
     helpClose.addEventListener("click", () => help.close());
@@ -577,6 +597,7 @@ bake 350* 30-40 minutes FOLD</textarea>
 
     async function updateShareURL() {
       const revision = ++shareRevision;
+      share.disabled = true;
       try {
         const encoded = await encodeRecipe(source.value);
         if (revision !== shareRevision) {
@@ -585,6 +606,7 @@ bake 350* 30-40 minutes FOLD</textarea>
         const url = new URL(location.href);
         url.searchParams.set("recipe", encoded);
         history.replaceState(null, "", url);
+        share.disabled = false;
       } catch (cause) {
         console.error("Could not update the share URL", cause);
       }
@@ -636,6 +658,19 @@ bake 350* 30-40 minutes FOLD</textarea>
       link.click();
       link.remove();
     });
+    share.addEventListener("click", async () => {
+      clearTimeout(shareFeedbackTimer);
+      try {
+        await navigator.clipboard.writeText(location.href);
+        share.textContent = "Copied!";
+      } catch (cause) {
+        share.textContent = "Copy failed";
+        console.error("Could not copy the share URL", cause);
+      }
+      shareFeedbackTimer = setTimeout(() => {
+        share.textContent = "Share";
+      }, 1600);
+    });
 
     let sharedRecipeError = "";
     const sharedRecipe = new URL(location.href).searchParams.get("recipe");
@@ -646,6 +681,7 @@ bake 350* 30-40 minutes FOLD</textarea>
         sharedRecipeError = `Invalid shared recipe: ${cause instanceof Error ? cause.message : String(cause)}`;
       }
     }
+    share.disabled = Boolean(sharedRecipeError);
 
     try {
       const go = new Go();
@@ -662,6 +698,8 @@ bake 350* 30-40 minutes FOLD</textarea>
         throw new Error("The WebAssembly renderer did not start.");
       }
       source.addEventListener("input", () => {
+        clearTimeout(shareFeedbackTimer);
+        share.textContent = "Share";
         render();
         void updateShareURL();
       });
