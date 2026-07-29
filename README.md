@@ -27,6 +27,10 @@ FOLD: fold in MIX2 FLW COCOA BSO SALT
 bake 350* 30-40 minutes FOLD
 ```
 
+Read it left to right: standalone instructions span the full width, ingredient
+rows begin on the left, and each action block spans the rows it consumes as the
+recipe converges toward the final step on the right.
+
 ![The example recipe rendered as a dependency diagram](sample.svg)
 
 ## Usage

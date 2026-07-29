@@ -24,7 +24,7 @@
 
     header {
       display: flex;
-      align-items: baseline;
+      align-items: center;
       gap: 0.75rem;
       padding: 0.9rem 1.25rem;
       border-bottom: 1px solid #cbd7cd;
@@ -108,6 +108,24 @@
       cursor: not-allowed;
     }
 
+    .help-trigger {
+      width: 2rem;
+      height: 2rem;
+      margin-left: auto;
+      padding: 0;
+      border-color: #91a397;
+      border-radius: 50%;
+      background: #fff;
+      color: #356443;
+      font-size: 1rem;
+      font-weight: 800;
+    }
+
+    .help-trigger:hover {
+      border-color: #159447;
+      background: #edf8f0;
+    }
+
     textarea {
       width: 100%;
       min-height: 22rem;
@@ -161,6 +179,215 @@
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
 
+    dialog {
+      width: min(46rem, calc(100% - 2rem));
+      max-height: calc(100vh - 2rem);
+      padding: 0;
+      overflow: auto;
+      border: 0;
+      border-radius: 0.75rem;
+      box-shadow: 0 1.5rem 4rem rgb(24 48 31 / 25%);
+      color: #17231b;
+    }
+
+    dialog::backdrop {
+      background: rgb(20 35 25 / 55%);
+      backdrop-filter: blur(2px);
+    }
+
+    .help-heading {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.25rem 1rem;
+      padding: 1.1rem 1.2rem 0.9rem;
+      border-bottom: 1px solid #dce5de;
+      background: #f8fbf8;
+    }
+
+    .help-heading h2 {
+      margin: 0;
+      color: #155f2e;
+      font-size: 1.2rem;
+    }
+
+    .help-heading p {
+      grid-column: 1;
+      margin: 0;
+      color: #647168;
+      font-size: 0.9rem;
+    }
+
+    .help-close {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      align-self: start;
+      width: 2rem;
+      height: 2rem;
+      padding: 0;
+      border-color: transparent;
+      border-radius: 50%;
+      background: transparent;
+      color: #647168;
+      font-size: 1.35rem;
+      line-height: 1;
+    }
+
+    .help-close:hover {
+      background: #e8efe9;
+      color: #17231b;
+    }
+
+    .help-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      padding: 1rem 1.2rem;
+    }
+
+    .help-card {
+      min-width: 0;
+      padding: 0.9rem;
+      border: 1px solid #d6e0d8;
+      border-radius: 0.55rem;
+      background: #fff;
+    }
+
+    .help-card h3 {
+      margin: 0 0 0.7rem;
+      color: #34443a;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .mini-tree {
+      display: grid;
+      grid-template-columns: minmax(4.5rem, 1fr) repeat(3, minmax(2.75rem, 3.35rem));
+      grid-template-rows: repeat(3, 2.45rem);
+      margin-bottom: 0.7rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .mini-cell {
+      display: grid;
+      place-items: center;
+      margin: -1px 0 0 -1px;
+      border: 2px solid #159447;
+    }
+
+    .mini-source {
+      justify-items: start;
+      padding-left: 0.55rem;
+      background: #eaf3ff;
+      color: #255383;
+    }
+
+    .mini-action {
+      background: #fff4d8;
+      color: #76530a;
+    }
+
+    .mini-final {
+      background: #e5f6e9;
+      color: #155f2e;
+    }
+
+    .mini-wire {
+      align-self: end;
+      height: 2px;
+      margin-bottom: -1px;
+      background: #159447;
+    }
+
+    .mini-butter { grid-area: 1 / 1; }
+    .mini-melt { grid-area: 1 / 2; }
+    .mini-sugar { grid-area: 2 / 1; }
+    .mini-sugar-wire { grid-area: 2 / 2; }
+    .mini-mix { grid-area: 1 / 3 / 3 / 4; }
+    .mini-flour { grid-area: 3 / 1; }
+    .mini-flour-wire { grid-area: 3 / 2 / 4 / 4; }
+    .mini-fold { grid-area: 1 / 4 / 4 / 5; }
+
+    .help-card p {
+      margin: 0;
+      color: #56635b;
+      font-size: 0.84rem;
+      line-height: 1.4;
+    }
+
+    .syntax {
+      display: grid;
+      gap: 0.35rem;
+      margin-bottom: 0.7rem;
+      padding: 0.7rem;
+      overflow-x: auto;
+      border-radius: 0.4rem;
+      background: #17231b;
+      color: #edf4ee;
+      font: 0.78rem/1.4 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      white-space: nowrap;
+    }
+
+    .token-result {
+      color: #d9b8ff;
+      font-weight: 700;
+    }
+
+    .token-input {
+      color: #ffcb7b;
+      font-weight: 700;
+    }
+
+    .syntax-key {
+      display: grid;
+      gap: 0.35rem;
+      color: #56635b;
+      font-size: 0.8rem;
+      line-height: 1.3;
+    }
+
+    .syntax-key b {
+      display: inline-block;
+      min-width: 4.6rem;
+    }
+
+    .syntax-key .token-result {
+      color: #74419e;
+    }
+
+    .syntax-key .token-input {
+      color: #9b5b00;
+    }
+
+    .help-rules {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      padding: 0 1.2rem 1rem;
+    }
+
+    .help-rule {
+      padding: 0.35rem 0.55rem;
+      border-radius: 999px;
+      background: #edf3ee;
+      color: #48564d;
+      font-size: 0.76rem;
+      font-weight: 650;
+    }
+
+    .help-note {
+      margin: 0 1.2rem 1.2rem;
+      padding: 0.65rem 0.75rem;
+      border-left: 3px solid #d59124;
+      border-radius: 0 0.35rem 0.35rem 0;
+      background: #fff8e7;
+      color: #66501f;
+      font-size: 0.8rem;
+      line-height: 1.35;
+    }
+
     [hidden] {
       display: none !important;
     }
@@ -178,6 +405,10 @@
       textarea {
         resize: vertical;
       }
+
+      .help-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -185,6 +416,7 @@
   <header>
     <h1>recipeviz</h1>
     <span>Edit the recipe to redraw its dependency forest.</span>
+    <button class="help-trigger" id="help-open" type="button" aria-label="How recipeviz works">?</button>
   </header>
   <main>
     <section>
@@ -218,6 +450,50 @@ bake 350* 30-40 minutes FOLD</textarea>
       </div>
     </section>
   </main>
+  <dialog id="help" aria-labelledby="help-title" aria-describedby="help-summary">
+    <div class="help-heading">
+      <h2 id="help-title">How recipeviz works</h2>
+      <p id="help-summary">Write steps as lines. Their results flow from left to right.</p>
+      <button class="help-close" id="help-close" type="button" aria-label="Close help">&times;</button>
+    </div>
+    <div class="help-grid">
+      <div class="help-card">
+        <h3>Read the image</h3>
+        <div class="mini-tree" role="img" aria-label="Butter is melted, mixed with sugar, then folded with flour">
+          <div class="mini-cell mini-source mini-butter">butter</div>
+          <div class="mini-cell mini-action mini-melt">melt</div>
+          <div class="mini-cell mini-source mini-sugar">sugar</div>
+          <div class="mini-wire mini-sugar-wire"></div>
+          <div class="mini-cell mini-action mini-mix">mix</div>
+          <div class="mini-cell mini-source mini-flour">flour</div>
+          <div class="mini-wire mini-flour-wire"></div>
+          <div class="mini-cell mini-final mini-fold">fold</div>
+        </div>
+        <p>Start on the left. Each tall action groups the rows inside its green outline; keep moving right to reach the finished step.</p>
+      </div>
+      <div class="help-card">
+        <h3>Write a .recipe</h3>
+        <div class="syntax" aria-label="Annotated recipe example">
+          <code><span class="token-result">BUTTER:</span> 4 oz butter</code>
+          <code>melt <span class="token-input">BUTTER</span></code>
+          <code><span class="token-result">SUGAR:</span> 1 cup sugar</code>
+          <code><span class="token-result">BATTER:</span> mix <span class="token-input">BUTTER SUGAR</span></code>
+        </div>
+        <div class="syntax-key">
+          <span><b class="token-result">NAME:</b> names this line's result</span>
+          <span><b class="token-input">NAME …</b> ending names are inputs</span>
+          <span><b>other text</b> describes what you do</span>
+        </div>
+      </div>
+    </div>
+    <div class="help-rules" aria-label="Recipe rules">
+      <span class="help-rule">One nonblank line = one step</span>
+      <span class="help-rule">Names: letters + numbers only</span>
+      <span class="help-rule">A result feeds at most one later step</span>
+      <span class="help-rule">No cycles</span>
+    </div>
+    <p class="help-note"><strong>Shortcut:</strong> <code>melt BUTTER</code> has one input and no new name, so later <code>BUTTER</code> means the melted result.</p>
+  </dialog>
   <script src="wasm_exec.js"></script>
   <script type="module">
     const source = document.querySelector("#source");
@@ -225,8 +501,28 @@ bake 350* 30-40 minutes FOLD</textarea>
     const error = document.querySelector("#error");
     const output = document.querySelector("#output");
     const download = document.querySelector("#download");
+    const help = document.querySelector("#help");
+    const helpOpen = document.querySelector("#help-open");
+    const helpClose = document.querySelector("#help-close");
     let currentImageURL = "";
     let shareRevision = 0;
+
+    helpOpen.addEventListener("click", () => help.showModal());
+    helpClose.addEventListener("click", () => help.close());
+    help.addEventListener("click", event => {
+      if (event.target !== help) {
+        return;
+      }
+      const bounds = help.getBoundingClientRect();
+      if (
+        event.clientX < bounds.left ||
+        event.clientX > bounds.right ||
+        event.clientY < bounds.top ||
+        event.clientY > bounds.bottom
+      ) {
+        help.close();
+      }
+    });
 
     async function encodeRecipe(value) {
       const compressed = new Uint8Array(await new Response(
