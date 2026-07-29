@@ -1,5 +1,7 @@
 # recipevize
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/hherman1/recipeviz/recipe.svg)](https://pkg.go.dev/github.com/hherman1/recipeviz/recipe)
+
 Turn terse, dependency-aware recipes into compact visual cooking maps.
 
 [Inspired by this recipe visualization.](https://x.com/juanbuis/status/2082162851553398821)
