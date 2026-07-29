@@ -489,7 +489,7 @@ bake 350* 30-40 minutes FOLD</textarea>
       <div class="panel-header">
         <div class="panel-title">SVG</div>
         <div class="panel-actions">
-          <button class="share-button" id="share" type="button" aria-live="polite" disabled>Share</button>
+          <button class="share-button" id="share" type="button" aria-live="polite">Share</button>
           <button id="download" type="button" disabled>Download SVG</button>
         </div>
       </div>
@@ -597,7 +597,6 @@ bake 350* 30-40 minutes FOLD</textarea>
 
     async function updateShareURL() {
       const revision = ++shareRevision;
-      share.disabled = true;
       try {
         const encoded = await encodeRecipe(source.value);
         if (revision !== shareRevision) {
@@ -606,7 +605,6 @@ bake 350* 30-40 minutes FOLD</textarea>
         const url = new URL(location.href);
         url.searchParams.set("recipe", encoded);
         history.replaceState(null, "", url);
-        share.disabled = false;
       } catch (cause) {
         console.error("Could not update the share URL", cause);
       }
@@ -681,8 +679,6 @@ bake 350* 30-40 minutes FOLD</textarea>
         sharedRecipeError = `Invalid shared recipe: ${cause instanceof Error ? cause.message : String(cause)}`;
       }
     }
-    share.disabled = Boolean(sharedRecipeError);
-
     try {
       const go = new Go();
       const response = await fetch("recipeviz.wasm");
