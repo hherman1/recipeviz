@@ -271,13 +271,15 @@ func wrapWords(text string, limit int) []string {
 }
 
 // writeSVGText writes escaped, vertically centered SVG text.
-func writeSVGText(out *strings.Builder, text string, x, centerY, lineHeight, wrapLimit int, anchor string) {
+func writeSVGText(out *strings.Builder, text string, x, centerY, fontSize, lineHeight, wrapLimit int, anchor string) {
 	lines := []string{text}
 	if wrapLimit > 0 {
 		lines = wrapWords(text, wrapLimit)
 	}
-	y := centerY - (len(lines)-1)*lineHeight/2
-	fmt.Fprintf(out, `<text x="%d" y="%d" text-anchor="%s" dominant-baseline="middle">`, x, y, anchor)
+	// SVG engines disagree on dominant-baseline font metrics. Positioning the
+	// alphabetic baseline directly keeps multiline blocks consistent.
+	y := centerY - (len(lines)-1)*lineHeight/2 + fontSize*3/10
+	fmt.Fprintf(out, `<text x="%d" y="%d" text-anchor="%s">`, x, y, anchor)
 	for i, line := range lines {
 		if i == 0 {
 			fmt.Fprintf(out, `<tspan x="%d">%s</tspan>`, x, html.EscapeString(line))
@@ -298,7 +300,8 @@ func Render(forest Forest) string {
 		minStepWidth     = 64
 		textWidth        = 11
 		horizontalSpace  = 16
-		verticalSpace    = 8
+		verticalSpace    = 12
+		fontSize         = 22
 		lineHeight       = 24
 		minimumRowHeight = 36
 	)
@@ -480,20 +483,20 @@ func Render(forest Forest) string {
 	}
 	out.WriteString("</g>")
 
-	out.WriteString(`<g fill="#111" font-family="Arial, sans-serif" font-size="22">`)
+	fmt.Fprintf(&out, `<g fill="#111" font-family="Arial, sans-serif" font-size="%d">`, fontSize)
 	for _, box := range boxes {
 		centerY := (rowEdges[box.firstRow] + rowEdges[box.lastRow]) / 2
 		x, boxWidth := boxPosition(box)
 		wrapLimit := max(1, (boxWidth-horizontalSpace)/textWidth)
 		if len(box.node.Children) == 0 {
 			if box.root {
-				writeSVGText(&out, box.node.Text, width/2, centerY, lineHeight, wrapLimit, "middle")
+				writeSVGText(&out, box.node.Text, width/2, centerY, fontSize, lineHeight, wrapLimit, "middle")
 			} else {
-				writeSVGText(&out, box.node.Text, horizontalSpace/2, centerY, lineHeight, wrapLimit, "start")
+				writeSVGText(&out, box.node.Text, horizontalSpace/2, centerY, fontSize, lineHeight, wrapLimit, "start")
 			}
 			continue
 		}
-		writeSVGText(&out, box.node.Text, x+boxWidth/2, centerY, lineHeight, wrapLimit, "middle")
+		writeSVGText(&out, box.node.Text, x+boxWidth/2, centerY, fontSize, lineHeight, wrapLimit, "middle")
 	}
 	out.WriteString("</g></svg>")
 	return out.String()

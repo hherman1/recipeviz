@@ -68,6 +68,9 @@ func TestSampleRecipe(t *testing.T) {
 	if strings.Contains(svg, "\n") {
 		t.Error("SVG contains unnecessary newlines")
 	}
+	if strings.Contains(svg, "dominant-baseline") {
+		t.Error("SVG uses browser-dependent dominant baseline alignment")
+	}
 	if got, want := strings.Count(svg, "<line "), 6; got != want {
 		t.Errorf("SVG line count = %d, want %d root separators and input closures", got, want)
 	}
