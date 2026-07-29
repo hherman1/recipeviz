@@ -6,7 +6,7 @@ Turn terse, dependency-aware recipes into compact visual cooking maps.
 
 ## Example
 
-[Try it out!](https://hherman1.github.io/recipeviz/interactive/)
+[Try it out!](https://hherman1.github.io/recipeviz/)
 
 ```recipe
 Butter and flour an 8x8 in pan
