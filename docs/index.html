@@ -70,6 +70,44 @@
       text-transform: uppercase;
     }
 
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.55rem;
+    }
+
+    .panel-header .panel-title {
+      margin-bottom: 0;
+    }
+
+    button {
+      padding: 0.4rem 0.7rem;
+      border: 1px solid #0d7d30;
+      border-radius: 0.35rem;
+      background: #159447;
+      color: #fff;
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    button:hover:not(:disabled) {
+      background: #0d7d30;
+    }
+
+    button:focus-visible {
+      outline: 3px solid rgb(21 148 71 / 25%);
+      outline-offset: 2px;
+    }
+
+    button:disabled {
+      border-color: #aab5ac;
+      background: #c5cdc7;
+      cursor: not-allowed;
+    }
+
     textarea {
       width: 100%;
       min-height: 22rem;
@@ -97,14 +135,11 @@
     }
 
     #output {
-      min-width: min-content;
-      padding: 0.75rem;
-    }
-
-    #output svg {
       display: block;
       width: 100%;
       height: auto;
+      padding: 0.75rem;
+      user-select: none;
     }
 
     #status,
@@ -172,11 +207,14 @@ FOLD: fold in MIX2 FLW COCOA BSO SALT
 bake 350* 30-40 minutes FOLD</textarea>
     </section>
     <section>
-      <div class="panel-title">SVG</div>
+      <div class="panel-header">
+        <div class="panel-title">SVG</div>
+        <button id="download" type="button" disabled>Download SVG</button>
+      </div>
       <div class="result" aria-live="polite">
         <div id="status">Loading renderer…</div>
         <div id="error" role="alert" hidden></div>
-        <div id="output" hidden></div>
+        <img id="output" alt="Rendered recipe dependency diagram" hidden>
       </div>
     </section>
   </main>
@@ -186,8 +224,51 @@ bake 350* 30-40 minutes FOLD</textarea>
     const status = document.querySelector("#status");
     const error = document.querySelector("#error");
     const output = document.querySelector("#output");
+    const download = document.querySelector("#download");
+    let currentImageURL = "";
+    let shareRevision = 0;
+
+    async function encodeRecipe(value) {
+      const compressed = new Uint8Array(await new Response(
+        new Blob([value]).stream().pipeThrough(new CompressionStream("gzip")),
+      ).arrayBuffer());
+      let binary = "";
+      for (let offset = 0; offset < compressed.length; offset += 0x8000) {
+        binary += String.fromCharCode(...compressed.subarray(offset, offset + 0x8000));
+      }
+      return btoa(binary).replaceAll("+", "-").replaceAll("/", "_").replace(/=+$/, "");
+    }
+
+    async function decodeRecipe(value) {
+      const base64 = value.replaceAll("-", "+").replaceAll("_", "/");
+      const binary = atob(base64 + "=".repeat((4 - base64.length % 4) % 4));
+      const compressed = Uint8Array.from(binary, character => character.charCodeAt(0));
+      const decompressed = new Blob([compressed]).stream().pipeThrough(new DecompressionStream("gzip"));
+      return new Response(decompressed).text();
+    }
+
+    async function updateShareURL() {
+      const revision = ++shareRevision;
+      try {
+        const encoded = await encodeRecipe(source.value);
+        if (revision !== shareRevision) {
+          return;
+        }
+        const url = new URL(location.href);
+        url.searchParams.set("recipe", encoded);
+        history.replaceState(null, "", url);
+      } catch (cause) {
+        console.error("Could not update the share URL", cause);
+      }
+    }
 
     function showError(message) {
+      if (currentImageURL) {
+        URL.revokeObjectURL(currentImageURL);
+        currentImageURL = "";
+        output.removeAttribute("src");
+      }
+      download.disabled = true;
       status.hidden = true;
       output.hidden = true;
       error.textContent = message;
@@ -203,14 +284,40 @@ bake 350* 30-40 minutes FOLD</textarea>
         }
         error.hidden = true;
         status.hidden = true;
-        output.innerHTML = result.svg;
+        const nextImageURL = URL.createObjectURL(new Blob([result.svg], { type: "image/svg+xml;charset=utf-8" }));
+        if (currentImageURL) {
+          URL.revokeObjectURL(currentImageURL);
+        }
+        currentImageURL = nextImageURL;
+        download.disabled = false;
+        output.src = currentImageURL;
         output.hidden = false;
       } catch (cause) {
         showError(cause instanceof Error ? cause.message : String(cause));
       }
     }
 
-    source.addEventListener("input", render);
+    download.addEventListener("click", () => {
+      if (!currentImageURL) {
+        return;
+      }
+      const link = document.createElement("a");
+      link.href = currentImageURL;
+      link.download = "recipe.svg";
+      document.body.append(link);
+      link.click();
+      link.remove();
+    });
+
+    let sharedRecipeError = "";
+    const sharedRecipe = new URL(location.href).searchParams.get("recipe");
+    if (sharedRecipe !== null) {
+      try {
+        source.value = await decodeRecipe(sharedRecipe);
+      } catch (cause) {
+        sharedRecipeError = `Invalid shared recipe: ${cause instanceof Error ? cause.message : String(cause)}`;
+      }
+    }
 
     try {
       const go = new Go();
@@ -226,7 +333,15 @@ bake 350* 30-40 minutes FOLD</textarea>
       if (typeof globalThis.recipevizRender !== "function") {
         throw new Error("The WebAssembly renderer did not start.");
       }
-      render();
+      source.addEventListener("input", () => {
+        render();
+        void updateShareURL();
+      });
+      if (sharedRecipeError) {
+        showError(sharedRecipeError);
+      } else {
+        render();
+      }
       source.focus();
     } catch (cause) {
       showError(cause instanceof Error ? cause.message : String(cause));

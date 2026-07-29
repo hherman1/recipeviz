@@ -1,4 +1,4 @@
-# recipeviz
+# recipevize
 
 Turn terse, dependency-aware recipes into compact visual cooking maps.
 
@@ -47,7 +47,29 @@ Parse and validation errors are written to standard error and produce a
 nonzero exit status. From a source checkout, the equivalent command is
 `go run . sample.recipe > sample.svg`.
 
-### Programmatic
+### Markdown
+
+Pass `-html` to render a Markdown file as HTML. Each fenced `recipe` block
+remains visible and gets a generated dependency SVG immediately above it:
+
+````markdown
+# My recipe
+
+Got this from xyz.com
+
+```recipe
+BUTTER: 4 oz butter
+melt BUTTER
+```
+
+I love it!
+````
+
+```sh
+recipeviz -html recipe.md > recipe.html
+```
+
+### programmatic
 
 The [`recipe`](./recipe) package exposes the AST, dependency forest, parser,
 transformer, and SVG renderer:
@@ -92,7 +114,7 @@ between a description and its trailing inputs.
 ### Results
 
 - A step declares a result by beginning with an ASCII alphanumeric name,
-  followed by exactly a colon and a space: `NAME: description`.
+  followed by `: ` (a colon and at least one space): `NAME: description`.
 - Names are case-sensitive. `MIX1` and `mix1` are different results.
 - Names must be unique within the file. Duplicate declarations are invalid.
 - A declaration does not need to precede its references; the entire file is
