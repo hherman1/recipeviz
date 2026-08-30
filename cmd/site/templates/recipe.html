@@ -1,0 +1,57 @@
+{{- define "recipe.html" -}}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{.Title}} · recipeviz</title>
+  {{- with .Description}}
+  <meta name="description" content="{{.}}">
+  {{- end}}
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../index.html">recipeviz</a>
+    <nav class="site-nav">
+      <a href="../browse.html">Browse</a>
+      <a href="../index.html">Playground</a>
+      <a href="https://github.com/hherman1/recipeviz">GitHub</a>
+    </nav>
+  </header>
+  <main class="recipe">
+    <article>
+      <p class="back"><a href="../browse.html">&larr; All recipes</a></p>
+      <h1>{{.Title}}</h1>
+      {{- with .Description}}
+      <p class="lede-text">{{.}}</p>
+      {{- end}}
+      {{- with .Tags}}
+      <ul class="tags">
+        {{- range .}}
+        <li>{{.}}</li>
+        {{- end}}
+      </ul>
+      {{- end}}
+      <figure class="hero">
+        <div class="hero-diagram" style="aspect-ratio: {{.Width}} / {{.Height}}">{{.Diagram}}</div>
+        <figcaption>
+          <span>Read left to right: ingredients enter on the left, each block spans what it consumes.</span>
+          <a href="../index.html?recipe={{.PlaygroundQuery}}">Open in the playground</a>
+        </figcaption>
+      </figure>
+      <details class="source">
+        <summary>Recipe source</summary>
+        <pre><code class="language-recipe">{{.Recipe}}</code></pre>
+      </details>
+      {{- with .Body}}
+      <div class="body">{{.}}</div>
+      {{- end}}
+    </article>
+  </main>
+  <footer class="site-footer">
+    <p>Written in the <a href="https://github.com/hherman1/recipeviz#spec">.recipe format</a> and rendered by recipeviz.</p>
+  </footer>
+</body>
+</html>
+{{end -}}

@@ -1,0 +1,348 @@
+/* Shared styles for the generated browse index and recipe pages. */
+
+:root {
+  --ink: #17231b;
+  --muted: #647168;
+  --line: #cbd7cd;
+  --page: #f4f7f4;
+  --surface: #fff;
+  --accent: #159447;
+  --accent-dark: #0d7d30;
+  --accent-wash: #edf8f0;
+
+  color: var(--ink);
+  background: var(--page);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  line-height: 1.55;
+}
+
+a {
+  color: var(--accent-dark);
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.brand {
+  color: var(--accent-dark);
+  font-size: 1.25rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.site-nav {
+  display: flex;
+  gap: 1rem;
+  margin-left: auto;
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+
+.site-nav a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.site-nav a:hover {
+  color: var(--accent-dark);
+}
+
+main {
+  flex: 1;
+  width: 100%;
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 3rem;
+}
+
+.lede h1 {
+  margin: 0 0 0.35rem;
+  font-size: 1.9rem;
+}
+
+.lede p {
+  max-width: 42rem;
+  margin: 0;
+  color: var(--muted);
+}
+
+/* Browse index */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+  gap: 1.1rem;
+  margin: 1.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 0.7rem;
+  background: var(--surface);
+  color: inherit;
+  text-decoration: none;
+}
+
+.card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0.6rem 1.4rem rgb(24 48 31 / 10%);
+}
+
+.card:focus-visible {
+  outline: 3px solid rgb(21 148 71 / 30%);
+  outline-offset: 2px;
+}
+
+.card-diagram {
+  display: grid;
+  height: 11rem;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  place-items: center;
+}
+
+.card-diagram svg {
+  width: 100%;
+  height: 100%;
+}
+
+.card-text {
+  padding: 0.9rem 1rem 1.1rem;
+}
+
+.card-text h2 {
+  margin: 0 0 0.3rem;
+  font-size: 1.05rem;
+}
+
+.card-text p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tags li {
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: var(--accent-wash);
+  color: #2c6a41;
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+
+/* Recipe page */
+
+.recipe article {
+  max-width: 52rem;
+  margin: 0 auto;
+}
+
+.back {
+  margin: 0 0 1rem;
+  font-size: 0.85rem;
+  font-weight: 650;
+}
+
+.back a {
+  text-decoration: none;
+}
+
+.recipe h1 {
+  margin: 0 0 0.4rem;
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.lede-text {
+  max-width: 40rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.hero {
+  margin: 1.6rem 0 1.25rem;
+}
+
+.hero-diagram {
+  padding: 0.75rem;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 0.7rem;
+  background: var(--surface);
+}
+
+.hero-diagram svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-top: 0.6rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.hero figcaption a {
+  margin-left: auto;
+  font-weight: 650;
+}
+
+.source {
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  background: var(--surface);
+}
+
+.source summary {
+  padding: 0.55rem 0.85rem;
+  color: #415048;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.source pre {
+  margin: 0;
+  padding: 0 0.9rem 0.9rem;
+  overflow-x: auto;
+}
+
+.body {
+  margin-top: 2rem;
+}
+
+.body h2 {
+  margin: 2rem 0 0.6rem;
+  font-size: 1.25rem;
+}
+
+.body h3 {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1.05rem;
+}
+
+.body > :first-child {
+  margin-top: 0;
+}
+
+.body img,
+.body video,
+.body iframe {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 1.25rem 0;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  background: var(--surface);
+}
+
+.body figure {
+  margin: 1.5rem 0;
+}
+
+.body figure img {
+  margin: 0;
+}
+
+.body figcaption {
+  margin-top: 0.45rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.body blockquote {
+  margin: 1.25rem 0;
+  padding: 0.1rem 0 0.1rem 1rem;
+  border-left: 3px solid var(--accent);
+  color: #48564d;
+}
+
+.body svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 1.25rem 0 0;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+}
+
+.body pre {
+  padding: 0.85rem;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  background: var(--surface);
+}
+
+.body svg + pre {
+  margin-top: 0.6rem;
+}
+
+pre,
+code {
+  font: 0.88rem/1.5 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.site-footer {
+  padding: 1.25rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+@media (max-width: 560px) {
+  main {
+    padding: 1.5rem 1rem 2.5rem;
+  }
+
+  .hero figcaption a {
+    margin-left: 0;
+  }
+}

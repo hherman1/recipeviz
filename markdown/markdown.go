@@ -13,12 +13,23 @@ import (
 	"github.com/yuin/goldmark/util"
 )
 
-var converter = goldmark.New(goldmark.WithRendererOptions(
-	renderer.WithNodeRenderers(util.Prioritized(
+var (
+	converter        = newConverter(false)
+	trustedConverter = newConverter(true)
+)
+
+// newConverter builds a Markdown converter that decorates recipe blocks with
+// diagrams. Raw HTML in the source is stripped unless allowRawHTML is set.
+func newConverter(allowRawHTML bool) goldmark.Markdown {
+	options := []renderer.Option{renderer.WithNodeRenderers(util.Prioritized(
 		&recipeBlockRenderer{Config: html.NewConfig()},
 		100,
-	)),
-))
+	))}
+	if allowRawHTML {
+		options = append(options, html.WithUnsafe())
+	}
+	return goldmark.New(goldmark.WithRendererOptions(options...))
+}
 
 // recipeBlockRenderer preserves normal fenced code output while decorating
 // recipe blocks with diagrams.
@@ -77,9 +88,20 @@ func (r *recipeBlockRenderer) renderFencedCodeBlock(
 }
 
 // Render converts CommonMark to an HTML fragment and inserts a dependency SVG
-// immediately before each fenced recipe code block. An invalid recipe aborts
-// conversion without returning partial HTML.
+// immediately before each fenced recipe code block. Raw HTML in the source is
+// stripped. An invalid recipe aborts conversion without returning partial HTML.
 func Render(source []byte) (string, error) {
+	return render(converter, source)
+}
+
+// RenderTrusted is Render with raw HTML in the source copied through to the
+// output verbatim, which allows embedded media such as <video> and <iframe>.
+// Use it only for Markdown you control.
+func RenderTrusted(source []byte) (string, error) {
+	return render(trustedConverter, source)
+}
+
+func render(converter goldmark.Markdown, source []byte) (string, error) {
 	var out bytes.Buffer
 	if err := converter.Convert(source, &out); err != nil {
 		return "", fmt.Errorf("converting Markdown to HTML: %v", err)

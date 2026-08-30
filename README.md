@@ -94,6 +94,47 @@ if err != nil {
 svg := recipe.Render(forest)
 ```
 
+## Recipe site
+
+[Browse the recipes.](https://hherman1.github.io/recipeviz/browse.html)
+
+`docs/` is served directly by GitHub Pages, so its recipe pages are generated
+and committed rather than built on deploy. The content lives in `recipes/`, one
+Markdown file per recipe:
+
+````markdown
+---
+title: Espresso Brownies
+description: One sentence for the browse card and the page subtitle.
+tags: dessert, baking
+---
+
+```recipe
+UBR: 4oz unsalted butter
+melt UBR
+```
+
+Anything below the first recipe block is optional. Ordinary Markdown, plus raw
+HTML for embeds, and images from `recipes/media/`.
+````
+
+The first fenced `recipe` block becomes the card at the top of the page; the
+rest of the file is rendered below it. Further `recipe` blocks in the body get
+their own diagrams in place. `recipes/_template.md` is a working example — files
+whose name begins with `_` are not published.
+
+Add or edit a page, then regenerate:
+
+```sh
+go run ./cmd/site
+```
+
+That writes `docs/browse.html`, `docs/recipes/<slug>.html`, `docs/site.css` and a
+copy of `recipes/media/`, removing pages whose recipes are gone. `go run
+./cmd/site -check` reports whether the committed pages are stale without writing
+anything; `go test ./cmd/site` asserts the same, so a forgotten regeneration
+fails the tests.
+
 ## Spec
 
 A `.recipe` file is plain text. Its approximate grammar is:

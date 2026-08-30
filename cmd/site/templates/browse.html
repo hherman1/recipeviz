@@ -1,0 +1,52 @@
+{{- define "browse.html" -}}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Browse recipes · recipeviz</title>
+  <meta name="description" content="Recipes rendered as recipeviz dependency diagrams.">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html">recipeviz</a>
+    <nav class="site-nav">
+      <a href="index.html">Playground</a>
+      <a href="https://github.com/hherman1/recipeviz">GitHub</a>
+    </nav>
+  </header>
+  <main class="browse">
+    <div class="lede">
+      <h1>Recipes</h1>
+      <p>Every recipe below is a dependency map: read it left to right, from ingredients to the finished dish.</p>
+    </div>
+    <ul class="cards">
+      {{- range .}}
+      <li>
+        <a class="card" href="recipes/{{.Slug}}.html">
+          <div class="card-diagram">{{.Diagram}}</div>
+          <div class="card-text">
+            <h2>{{.Title}}</h2>
+            {{- with .Description}}
+            <p>{{.}}</p>
+            {{- end}}
+            {{- with .Tags}}
+            <ul class="tags">
+              {{- range .}}
+              <li>{{.}}</li>
+              {{- end}}
+            </ul>
+            {{- end}}
+          </div>
+        </a>
+      </li>
+      {{- end}}
+    </ul>
+  </main>
+  <footer class="site-footer">
+    <p>Written in the <a href="https://github.com/hherman1/recipeviz#spec">.recipe format</a> and rendered by recipeviz.</p>
+  </footer>
+</body>
+</html>
+{{end -}}
