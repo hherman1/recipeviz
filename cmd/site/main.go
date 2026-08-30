@@ -20,6 +20,7 @@ import (
 	"html/template"
 	"io/fs"
 	"maps"
+	"net/url"
 	"os"
 	"path"
 	"path/filepath"
@@ -38,7 +39,7 @@ var templates = template.Must(template.ParseFS(sources, "templates/*.html"))
 
 // frontMatterKeys are the fields a recipe page may declare. Anything else is a
 // typo the author would rather hear about than silently lose.
-var frontMatterKeys = []string{"title", "description", "tags"}
+var frontMatterKeys = []string{"title", "description", "tags", "source"}
 
 // viewBoxPattern captures the width and height of a rendered diagram.
 var viewBoxPattern = regexp.MustCompile(`viewBox="0 0 (\d+) (\d+)"`)
@@ -49,6 +50,10 @@ type page struct {
 	Title       string
 	Description string
 	Tags        []string
+
+	// SourceURL credits where the recipe came from, and SourceHost is the
+	// label the page shows for it. Both are empty for an original recipe.
+	SourceURL, SourceHost string
 
 	// Recipe is the source of the hero recipe block, shown alongside the card.
 	Recipe string
@@ -196,6 +201,11 @@ func parsePage(slug string, source []byte) (*page, error) {
 		return nil, err
 	}
 
+	sourceURL, sourceHost, err := parseSource(meta["source"])
+	if err != nil {
+		return nil, err
+	}
+
 	var tags []string
 	for _, tag := range strings.Split(meta["tags"], ",") {
 		if tag = strings.TrimSpace(tag); tag != "" {
@@ -207,6 +217,8 @@ func parsePage(slug string, source []byte) (*page, error) {
 		Title:           meta["title"],
 		Description:     meta["description"],
 		Tags:            tags,
+		SourceURL:       sourceURL,
+		SourceHost:      sourceHost,
 		Recipe:          recipeSource,
 		Diagram:         template.HTML(diagram),
 		Width:           viewBox[1],
@@ -292,6 +304,22 @@ func runLength(line string, character byte) int {
 		length++
 	}
 	return length
+}
+
+// parseSource validates the optional source link and derives the site name the
+// page credits it to.
+func parseSource(source string) (string, string, error) {
+	if source == "" {
+		return "", "", nil
+	}
+	parsed, err := url.Parse(source)
+	if err != nil {
+		return "", "", fmt.Errorf("source %q is not a URL: %v", source, err)
+	}
+	if (parsed.Scheme != "http" && parsed.Scheme != "https") || parsed.Host == "" {
+		return "", "", fmt.Errorf("source %q is not an http or https URL", source)
+	}
+	return source, strings.TrimPrefix(parsed.Host, "www."), nil
 }
 
 // playgroundQuery encodes a recipe the way the playground's share links do:

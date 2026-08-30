@@ -221,8 +221,14 @@ main {
   font-size: 0.82rem;
 }
 
-.hero figcaption a {
+.caption-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
   margin-left: auto;
+}
+
+.hero figcaption a {
   font-weight: 650;
 }
 
@@ -342,7 +348,7 @@ code {
     padding: 1.5rem 1rem 2.5rem;
   }
 
-  .hero figcaption a {
+  .caption-links {
     margin-left: 0;
   }
 }

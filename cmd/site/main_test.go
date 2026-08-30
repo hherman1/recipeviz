@@ -15,6 +15,7 @@ const samplePage = `---
 title: Butter Test
 description: A short blurb.
 tags: quick, one-pot
+source: https://www.example.com/butter
 ---
 
 ` + "```recipe" + `
@@ -78,6 +79,7 @@ func TestBuildRendersPagesBrowseAndMedia(t *testing.T) {
 		`style="aspect-ratio: `,
 		`<img src="media/dish.jpg" alt="The dish">`,
 		`<video controls src="media/dish.mp4"></video>`,
+		`<a href="https://www.example.com/butter" rel="noreferrer">Recipe from example.com</a>`,
 	} {
 		if !strings.Contains(page, want) {
 			t.Errorf("page does not contain %q", want)
@@ -145,6 +147,10 @@ func TestBuildRejectsBrokenPages(t *testing.T) {
 		"no recipe block": {
 			source: "---\ntitle: Broken\n---\n\nJust prose.\n",
 			want:   "no ```recipe block",
+		},
+		"source is not a URL": {
+			source: "---\ntitle: Broken\nsource: cabbages.example\n---\n\n```recipe\nA: salt\nuse A\n```\n",
+			want:   "not an http or https URL",
 		},
 		"invalid recipe": {
 			source: "---\ntitle: Broken\n---\n\n```recipe\nA: salt\nB: first A\nC: second A\n```\n",

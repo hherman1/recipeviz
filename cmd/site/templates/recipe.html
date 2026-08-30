@@ -37,7 +37,12 @@
         <div class="hero-diagram" style="aspect-ratio: {{.Width}} / {{.Height}}">{{.Diagram}}</div>
         <figcaption>
           <span>Read left to right: ingredients enter on the left, each block spans what it consumes.</span>
-          <a href="../index.html?recipe={{.PlaygroundQuery}}">Open in the playground</a>
+          <span class="caption-links">
+            {{- with .SourceURL}}
+            <a href="{{.}}" rel="noreferrer">Recipe from {{$.SourceHost}}</a>
+            {{- end}}
+            <a href="../index.html?recipe={{.PlaygroundQuery}}">Open in the playground</a>
+          </span>
         </figcaption>
       </figure>
       <details class="source">

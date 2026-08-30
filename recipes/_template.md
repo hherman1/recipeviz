@@ -2,6 +2,7 @@
 title: Recipe Name
 description: One sentence for the browse card and the page subtitle.
 tags: dinner, one-pot
+source: https://example.com/where-this-came-from
 ---
 
 ```recipe
@@ -11,7 +12,8 @@ MIX: saute ONION OIL
 serve MIX
 ```
 
-Everything below the first `recipe` block is optional. It is ordinary Markdown,
+`source` is optional; when it is set the page credits and links to it under
+the card. Everything below the first `recipe` block is optional. It is ordinary Markdown,
 so headings, lists, links, blockquotes and tables all work.
 
 ## Images

@@ -107,6 +107,7 @@ Markdown file per recipe:
 title: Espresso Brownies
 description: One sentence for the browse card and the page subtitle.
 tags: dessert, baking
+source: https://example.com/where-this-came-from
 ---
 
 ```recipe
@@ -119,7 +120,8 @@ HTML for embeds, and images from `recipes/media/`.
 ````
 
 The first fenced `recipe` block becomes the card at the top of the page; the
-rest of the file is rendered below it. Further `recipe` blocks in the body get
+rest of the file is rendered below it. `tags` and `source` are optional; a
+`source` is linked under the card, credited to its host. Further `recipe` blocks in the body get
 their own diagrams in place. `recipes/_template.md` is a working example — files
 whose name begins with `_` are not published.
 
