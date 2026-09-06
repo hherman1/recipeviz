@@ -14,10 +14,11 @@ GARLIC: 2 garlic cloves
 COOKED: add the garlic, flip, and cook through, about 5 minutes CRISPED GARLIC
 rest on a plate, leaving 3 tbsp of fat in the pan COOKED
 
+FOND: the reserved 3 tbsp of chicken fat, and the fond in the pan
 STOCK: 1/2 cup chicken stock
 JUICE: 2 tbsp lime juice
 MAPLE: 2 tsp maple syrup
-REDUCED: season, simmer, and reduce by half, about 3 minutes STOCK JUICE MAPLE
+REDUCED: add to the pan, season, simmer, and reduce by half, about 3 minutes FOND STOCK JUICE MAPLE
 BUTTER: 3 tbsp cold unsalted butter
 SAUCE: whisk in until glossy and thick REDUCED BUTTER
 
@@ -73,7 +74,9 @@ step and does not come back until the plate; the sauce is built in the pan it
 left behind, on the rendered fat and the garlic. Those two tracks running in
 parallel and meeting at the end is the shape of every pan-sauce recipe.
 
-What the map cannot show is the thing joining them: the fond and the reserved
-fat. A step in this format hands forward exactly one result, so what a step
-leaves behind in the pan is invisible to the diagram even when, as here, it is
-half of what makes the sauce.
+The rendered fat is on the map as an input to the reduction, because leaving it
+off made the sauce look like it began from nothing. But it is drawn as a leaf —
+as if it were something you fetched — when it is really the output of the step
+above it. That edge is one the format cannot draw. A step hands forward exactly
+one result, and here that result has to be the chicken, so what the chicken
+leaves behind in the pan can only re-enter as an ingredient in its own right.
