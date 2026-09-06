@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"io"
 	"os"
+	"regexp"
 	"strings"
 	"testing"
 	"testing/fstest"
@@ -76,7 +77,7 @@ func TestBuildRendersPagesBrowseAndMedia(t *testing.T) {
 		"<title>Butter Test · recipeviz</title>",
 		`<p class="lede-text">A short blurb.</p>`,
 		"<li>quick</li>",
-		`style="aspect-ratio: `,
+		`<div class="hero-diagram" style="--diagram-ratio: `,
 		`<img src="media/dish.jpg" alt="The dish">`,
 		`<video controls src="media/dish.mp4"></video>`,
 		`<a href="https://www.example.com/butter" rel="noreferrer">Recipe from example.com</a>`,
@@ -84,6 +85,9 @@ func TestBuildRendersPagesBrowseAndMedia(t *testing.T) {
 		if !strings.Contains(page, want) {
 			t.Errorf("page does not contain %q", want)
 		}
+	}
+	if !regexp.MustCompile(`--diagram-ratio: \d+ / \d+"`).MatchString(page) {
+		t.Errorf("the diagram aspect ratio is not a pair of numbers:\n%s", page)
 	}
 	// The second recipe block keeps the inline diagram markdown.Render gives it.
 	if got := strings.Count(page[body:], "<svg "); got != 1 {
