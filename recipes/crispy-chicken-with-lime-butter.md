@@ -12,19 +12,19 @@ OIL: 1 tbsp neutral oil
 CRISPED: skin side down over medium heat, undisturbed until deeply golden, 20-25 minutes SEASONED OIL
 GARLIC: 2 garlic cloves
 COOKED: add the garlic, flip, and cook through, about 5 minutes CRISPED GARLIC
-rest on a plate, leaving 3 tbsp of fat in the pan COOKED
+FAT: rest the chicken on a plate, keeping 3 tbsp of fat in the pan COOKED
 
-FOND: the reserved 3 tbsp of chicken fat, and the fond in the pan
 STOCK: 1/2 cup chicken stock
 JUICE: 2 tbsp lime juice
 MAPLE: 2 tsp maple syrup
-REDUCED: add to the pan, season, simmer, and reduce by half, about 3 minutes FOND STOCK JUICE MAPLE
+REDUCED: add to the pan, season, simmer, and reduce by half, about 3 minutes FAT STOCK JUICE MAPLE
 BUTTER: 3 tbsp cold unsalted butter
 SAUCE: whisk in until glossy and thick REDUCED BUTTER
 
+RESTED: the rested chicken
 WEDGES: lime wedges
 HERBS: fresh herbs (optional)
-serve COOKED SAUCE WEDGES HERBS
+serve RESTED SAUCE WEDGES HERBS
 ```
 
 From NYT Cooking, one of their top 50 recipes of 2025. The original post
@@ -69,14 +69,14 @@ the sauce thickens and turns glossy; overheat it and it breaks.
 
 ## Reading the diagram
 
-Note where the chicken and the pan separate. The chicken leaves at the rest
-step and does not come back until the plate; the sauce is built in the pan it
-left behind, on the rendered fat and the garlic. Those two tracks running in
-parallel and meeting at the end is the shape of every pan-sauce recipe.
+The pan is the spine. Read straight across: season, render, flip, then the
+chicken comes out and 3 tbsp of its fat stays behind, and that pan is what the
+stock, lime and maple go into. The reduction is drawn after the chicken leaves
+because that is when it happens, and it takes what the chicken left as an input
+rather than starting from nothing.
 
-The rendered fat is on the map as an input to the reduction, because leaving it
-off made the sauce look like it began from nothing. But it is drawn as a leaf —
-as if it were something you fetched — when it is really the output of the step
-above it. That edge is one the format cannot draw. A step hands forward exactly
-one result, and here that result has to be the chicken, so what the chicken
-leaves behind in the pan can only re-enter as an ingredient in its own right.
+The chicken is what re-enters instead. It appears again near the bottom as "the
+rested chicken", feeding the final step. That is the compromise this format
+forces: a step hands forward exactly one result, and the removal step has to
+choose between handing forward the chicken or the pan. Handing forward the pan
+keeps the order honest, at the cost of the chicken coming back as a leaf.
